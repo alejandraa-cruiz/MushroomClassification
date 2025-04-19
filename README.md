@@ -1,5 +1,19 @@
 # Clasificación de hongos por medio de redes neuronales
 
+## Abstract
+
+La clasificación precisa de hongos en comestibles y venenosos es fundamental para la seguridad alimentaria
+y para el desarrollo de nuevos tratamientos médicos. Este proyecto presenta un modelo de clasificación binaria
+basado en redes neuronales artificiales de retropropagación (Backpropagation Neural Network, BPNN) para identificar
+hongos comestibles y venenosos a partir de un conjunto de datos del UC Irvine Machine Learning, que incluye 61,069
+observaciones y 20 variables.
+
+Se realizó un preprocesamiento exhaustivo y se descartó la necesidad de reducción de dimensionalidad debido a la
+baja multicolinealidad entre atributos. El modelo se implementó mediante una BPNN secuencial en Keras, utilizando
+una arquitectura simple con una capa oculta de 128 neuronas y activación ReLU, seguida de una capa de salida con
+activación sigmoide. En la evaluación inicial con Label Encoding, el modelo alcanzó una precisión del 99 %, mientras
+que al incluir One-Hot Encoding logró un 100 % de precisión, minimizando errores de clasificación
+
 ## Introducción
 
 La clasificación de los hongos en comestibles y venenosos constituye un aspecto fundamental de la micología,
