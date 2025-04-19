@@ -116,6 +116,14 @@ Para compilar la función se utiliza el optimizador Adam y se añade la función
 
 ## Resultados
 
+### Matriz de Confusión
+
+La matriz de confusión es una herramienta fundamental en la evaluación del desempeño de los modelos de clasificación,
+ya que proporciona una visualización detallada de las predicciones realizadas por el modelo en comparación con los valores reales
+en el conjunto de datos de prueba. Según Wahyudi y Andrian (2021), la matriz de confusión permite calcular métricas clave como
+la precisión y el recall. Estas métricas son esenciales para evaluar no solo la exactitud global del modelo, sino también su
+capacidad para identificar correctamente ambas clases, minimizando falsos positivos y falsos negativos.
+
 ### Evaluación Inicial
 
 El modelo alcanzó una precisión del 99 % en el conjunto de prueba utilizando _Label Enconding_ para todas las variables, lo que indica un desempeño altamente efectivo.
@@ -155,10 +163,49 @@ positivos que falsos negativos, aunque la diferencia es mínima.
 <p align="center">
   <img src="./images/initialConfussionMatrix.png" alt="initial confussion matrix" width="40%" />
   <br>
-  <em>Gráfica 2. Mapa de calor de la matriz de correlación</em>
+  <em>Gráfica 3. Matriz de confusión del modelo inicial</em>
 </p>
 
 ### Usando One-Hot Encoding
+
+Al cambiar la codificación de etiquetas para usar _One-Hot Encoding_ para las columnas con múltiples categorías.
+El modelo obtuvo una precisión del 100%, lo que sugiere que esta técnica permitió una representación más adecuada
+de las variables categóricas y, por lo tanto, una mayor capacidad de generalización. Se mantuvo la tendencia de
+generar más falsos positivos, pero únicamente con 3 resultados erróneos.
+
+<p align="center">
+  <table>
+    <tr>
+      <th>Clase</th>
+      <th>Precisión</th>
+      <th>Recall</th>
+      <th>F1-score</th>
+      <th>Soporte</th>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>1.00</td>
+      <td>1.00</td>
+      <td>1.00</td>
+      <td>5405</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>1.00</td>
+      <td>1.00</td>
+      <td>1.00</td>
+      <td>6809</td>
+    </tr>
+  </table>
+  <br>
+  <em>Tabla 3. Resultados de evaluación del modelo con One-Hot Encoding.</em>
+</p>
+
+<p align="center">
+  <img src="./images/oneHotEncodingConfussionMatrix.png" alt="initial confussion matrix" width="40%" />
+  <br>
+  <em>Gráfica 4. Matriz de confusión del modelo utilizando One-Hot Encoding</em>
+</p>
 
 ## Referencias
 
@@ -167,3 +214,5 @@ Patni, B., Bhattacharyya, M., Pokhriyal, A. et al. Remedying SARS-CoV-2 through 
 Singh A, Singh G, Kapoor R, Dhasmana A, Jerath S. G. Wild Edible Mushrooms of Jharkhand: Nutrient-Dense Seasonal Foods to Improve Dietary Diversity Among Indigenous Communities. Nutr Food Sci 2025; 13(1). doi : http://dx.doi.org/10.12944/CRNFSJ.13.1.4
 
 P. Jeatrakul and K. W. Wong, "Comparing the performance of different neural networks for binary classification problems," 2009 Eighth International Symposium on Natural Language Processing, Bangkok, Thailand, 2009, pp. 111-115, doi: 10.1109/SNLP.2009.5340935.
+
+Wahyudi, M., & Andriani, A. (2021). Application of C4.5 and Naïve Bayes Algorithm for Detection of Potential Increased Case Fatality Rate Diarrhea. Journal of Physics: Conference Series, 1830(1), 012016. https://doi.org/10.1088/1742-6596/1830/1/012016
