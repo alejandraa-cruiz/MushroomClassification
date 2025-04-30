@@ -155,6 +155,8 @@ Estas etapas incluyeron la codificación one-hot y la normalización de caracter
 Asimismo, las etiquetas de la variable objetivo fueron representadas de forma binaria, asignando el valor 1 a las instancias
 clasificadas como venenosas y 0 a las no venenosas.
 
+Para evitar el sobreajuste en una MLP, un problema común en el aprendizaje automático que puede surgir con la reducción de dimensionalidad, se añadió L2 como método de regularización. Esta técnica agrega una penalización a la función de pérdida para forzar al modelo a aprender el patrón (Abu-Doush et al., 2023). L2 es una técnica común para prevenir el sobreajuste en MLP y, como se muestra en la evaluación, fue suficiente para equilibrar el rendimiento de ambas clases.
+
 ## Resultados
 
 ### Matriz de Confusión
@@ -310,6 +312,8 @@ En síntesis, este enfoque no solo ofrece un alto rendimiento, sino que también
 y escalables en el ámbito de la micología aplicada y la inteligencia artificial.
 
 ## Referencias
+
+Abu-Doush, I., Ahmed, B., Awadallah, M. A., Al-Betar, M. A., & Rababaah, A. R. (2023). Enhancing multilayer perceptron neural network using archive-based Harris Hawks optimizer to predict gold prices. Journal of King Saud University-Computer and Information Sciences. https://doi.org/10.1016/j.jksuci.2023.101557
 
 A. A. Shujaaddeen, F. M. Ba-Alwi, A. T. Zahary, A. S. Alhegami, A. Alsabry and A. M. Al-Badani, "A Binary and Multi Classification Model on Tax Evasion: A Comparative Study," 2024 1st International Conference on Emerging Technologies for Dependable Internet of Things (ICETI), Sana'a, Yemen, 2024, pp. 1-9, doi: 10.1109/ICETI63946.2024.10777224.
 
