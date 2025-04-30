@@ -116,17 +116,44 @@ de salida. Aunque en la etapa inicial no se busca la reducción de dimensionalid
 en una etapa posterior, para simplificar el modelo una vez que se cuente con un buen desempeño.
 
 Las variables que mostraron una mayor asociación con la clase objetivo, según el valor del Chi-Square Score,
-fueron: _stem-width, cap-diameter, stem-height, stem-surface, cap-shape, stem-color, spore-print-color, gill-color, habitat y season_.
+fueron: _stem-width, cap-diameter, stem-height, stem-surface, cap-shape, stem-color, y gill-color_.
 
 ### Modelo
 
-La red neuronal definida en el modelo es una BPNN (Backpropagation Neural Network). Es una red neuronal que entrena con retropropagación. Jeatrakul y Wong (2009), al evaluar distintas arquitecturas para la clasificación binaria
+La red neuronal definida en el modelo esta entrenada con un algoritmo de entrenamiento BPNN (Backpropagation Neural Network). Es una red neuronal que entrena con retropropagación. Jeatrakul y Wong (2009), al evaluar distintas arquitecturas para la clasificación binaria
 encontraron que BPNN se comportaba de manera robusta en cada caso de prueba (diferentes conjuntos de datos). Lo que representaba una ventaja sin añadir la complejidad de una red CMTNN (Convolutional Multiscale Twin Neural Network).
 
 Por lo tanto, en este proyecto se define una red neuronal simple utilizando Keras. Es un modelo secuencial, donde las capas van una detrás de otra. El modelo consiste de dos capas.
 La primera capa es una capa densa que tiene 128 neuronas, se utiliza la función de activación `relu` para permitirle aprender relaciones complejas.
 La segunda capa es la capa salida, tiene una sola neurona de salida debido a que es una clasificación binaria. La función de activación `sigmoid` asigna el valor de salida entre 0 y 1.
 Para compilar la función se utiliza el optimizador Adam y se añade la función de pérdida `binary crossentropy`. Para evaluar el rendimiento del modelo se utiliza `accuracy`.
+
+Otros estudios (Shujaaddeen et al., 2024) han encontrado que en problemas de clasificación binaria una arquitectura MLP obtiene resultados superiores al 99% en las métricas de `accuracy`, `precision`,
+`f1-score` y `recall`. La arquitectura carece de capas ocultas y cuenta únicamente con la capa de entrada y la capa de salida. Entrenada con la función de activación ReLu y
+alrededor de 300 épocas.
+
+### Modelo Reducido
+
+Utilizando las variables que superaron el umbral (threshold) de 300 en el chi-score se mantuvieron las siete variables previamente mencionadas y se redujo la dimensionalidad del modelo.
+La variable `stem-surface` presentaba 38,124 valores faltantes de un total de 61, 069 registros. Al reducir la dimensionalidad, estos valores faltantes afectan el desempeño del modelo.
+Al tratar con valores faltantes, el estado del arte ha establecido dos enfoques principales.
+El primero consiste en ignorar los valores faltantes; este enfoque omite o elimina los casos que presentan datos faltantes
+en al menos una variable. Sin embargo, cuando la pérdida de datos supera el 50%, la precisión del modelo se ve afectada negativamente.
+El segundo enfoque es la imputación de valores faltantes, que consiste en reemplazar dichos valores por otros plausibles utilizando
+técnicas estadísticas (Shaheen MZ. Memon et al., 2023). En el caso del presente conjunto de datos, ignorar los valores faltantes implicaba una pérdida del 62%
+de los datos, por lo que se optó por la imputación.
+
+Para la imputación de variables categóricas existen diversos métodos, entre ellos: imputación por moda,
+K-Nearest Neighbors (KNN), imputación mediante Random Forest e Imputación Múltiple mediante Ecuaciones Encadenadas (MICE).
+Entre estos, KNN presenta la mayor precisión en la imputación de datos cuando más del 50% de los valores están ausentes (MShaheen MZ. Memon et al., 2023).
+En el presente conjunto de datos se aplicó la imputación mediante KNN; primero se realizó una codificación de etiquetas
+(label encoding), dado que el imputador KNN solo opera con representaciones numéricas. Posteriormente, los valores faltantes
+fueron imputados utilizando los 30 vecinos más cercanos. Finalmente, los datos fueron transformados nuevamente a sus etiquetas
+categóricas originales para continuar con las etapas subsiguientes del modelo.
+
+Estas etapas incluyeron la codificación one-hot y la normalización de características mediante escalado min-max.
+Asimismo, las etiquetas de la variable objetivo fueron representadas de forma binaria, asignando el valor 1 a las instancias
+clasificadas como venenosas y 0 a las no venenosas.
 
 ## Resultados
 
@@ -223,9 +250,13 @@ generar más falsos positivos, pero únicamente con 3 resultados erróneos.
 
 ## Referencias
 
-Patni, B., Bhattacharyya, M., Pokhriyal, A. et al. Remedying SARS-CoV-2 through nature: a review highlighting the potentiality of herbs, trees, mushrooms, and endophytic microorganisms in controlling Coronavirus. Planta 261, 89 (2025). doi: https://doi.org/10.1007/s00425-025-04647-8
+A. A. Shujaaddeen, F. M. Ba-Alwi, A. T. Zahary, A. S. Alhegami, A. Alsabry and A. M. Al-Badani, "A Binary and Multi Classification Model on Tax Evasion: A Comparative Study," 2024 1st International Conference on Emerging Technologies for Dependable Internet of Things (ICETI), Sana'a, Yemen, 2024, pp. 1-9, doi: 10.1109/ICETI63946.2024.10777224.
+
+Shaheen MZ. Memon, Robert Wamala, Ignace H. Kabano. A comparison of imputation methods for categorical data. Informatics in Medicine Unlocked, Volume 42, 2023, 101382. ISSN 2352-9148. https://doi.org/10.1016/j.imu.2023.101382
 
 Singh A, Singh G, Kapoor R, Dhasmana A, Jerath S. G. Wild Edible Mushrooms of Jharkhand: Nutrient-Dense Seasonal Foods to Improve Dietary Diversity Among Indigenous Communities. Nutr Food Sci 2025; 13(1). doi : http://dx.doi.org/10.12944/CRNFSJ.13.1.4
+
+Patni, B., Bhattacharyya, M., Pokhriyal, A. et al. Remedying SARS-CoV-2 through nature: a review highlighting the potentiality of herbs, trees, mushrooms, and endophytic microorganisms in controlling Coronavirus. Planta 261, 89 (2025). doi: https://doi.org/10.1007/s00425-025-04647-8
 
 P. Jeatrakul and K. W. Wong, "Comparing the performance of different neural networks for binary classification problems," 2009 Eighth International Symposium on Natural Language Processing, Bangkok, Thailand, 2009, pp. 111-115, doi: 10.1109/SNLP.2009.5340935.
 
