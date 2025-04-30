@@ -8,11 +8,11 @@ basado en redes neuronales artificiales de retropropagación (Backpropagation Ne
 hongos comestibles y venenosos a partir de un conjunto de datos del UC Irvine Machine Learning, que incluye 61,069
 observaciones y 20 variables.
 
-Se realizó un preprocesamiento exhaustivo y se descartó la necesidad de reducción de dimensionalidad debido a la
-baja multicolinealidad entre atributos. El modelo se implementó mediante una BPNN secuencial en Keras, utilizando
-una arquitectura simple con una capa oculta de 128 neuronas y activación ReLU, seguida de una capa de salida con
-activación sigmoide. En la evaluación inicial con Label Encoding, el modelo alcanzó una precisión del 99 %, mientras
-que al incluir One-Hot Encoding logró un 100 % de precisión, minimizando errores de clasificación
+Se realizó un preprocesamiento exhaustivo, que incluyó la imputación de valores faltantes mediante K-Nearest Neighbors (KNN), técnica seleccionada por su alta precisión en conjuntos de datos con más del 50 % de datos ausentes (Memon et al., 2023). Dado que KNN opera únicamente con representaciones numéricas, se aplicó codificación de etiquetas (Label Encoding) previa a la imputación y, posteriormente, los valores fueron transformados nuevamente a sus etiquetas categóricas originales. La reducción de dimensionalidad fue descartada debido a la baja multicolinealidad entre los atributos.
+
+El modelo se implementó mediante una BPNN secuencial en Keras, utilizando una arquitectura simple con una capa oculta de 128 neuronas y activación ReLU, seguida de una capa de salida con activación sigmoide. En la evaluación inicial utilizando Label Encoding, el modelo alcanzó una precisión del 99 %. Al aplicar One-Hot Encoding sobre las variables categóricas, se obtuvo una precisión del 100 %, con solo cinco errores de clasificación en el conjunto de prueba. El modelo es capaz de recibir entradas codificadas en arreglos de 125 valores (equivalentes a las 20 variables originales transformadas), lo que lo hace apto para una implementación práctica.
+
+Los resultados evidencian que, si bien es posible desarrollar modelos precisos utilizando un subconjunto de variables, la utilización del total de atributos garantiza un desempeño superior, crítico para aplicaciones donde los errores pueden tener consecuencias significativas. Este enfoque demuestra el potencial de las redes neuronales como herramientas eficaces y seguras para tareas de clasificación en contextos sensibles como la micología aplicada.
 
 ## Introducción
 
@@ -243,10 +243,71 @@ generar más falsos positivos, pero únicamente con 3 resultados erróneos.
 </p>
 
 <p align="center">
-  <img src="./images/oneHotEncodingConfussionMatrix.png" alt="initial confussion matrix" width="40%" />
+  <img src="./images/oneHotEncodingConfussionMatrix.png" alt="one-hot confussion matrix" width="40%" />
   <br>
   <em>Gráfica 4. Matriz de confusión del modelo utilizando One-Hot Encoding</em>
 </p>
+
+### Evaluación del modelo reducido
+
+Desde la perspectiva de generalización del modelo, los resultados indican un desempeño robusto y equilibrado entre
+ambas clases, con una precisión general del 95%. La similitud entre las métricas de precisión, recall y F1 para
+ambas clases, así como la ausencia de valores extremos o desbalance marcados, sugiere que el modelo no está sobreajustado
+(overfitted) a los datos de entrenamiento. En particular, el hecho de que tanto la clase mayoritaria (venenosa) como la
+clase minoritaria (no venenosa) presenten métricas F1 muy similares (ambas de 0.95) refuerza la idea de una buena capacidad
+de generalización.
+
+Considerando la reducción de dimensionalidad de 20 variables para predecir a 7 únicamente, el comportamiento del modelo
+es mejor de lo esperado. Reforzando que estás 7 variables tienen el mayor peso en la predicción de la clase.
+
+<p align="center">
+  <table>
+    <tr>
+      <th>Clase</th>
+      <th>Precisión</th>
+      <th>Recall</th>
+      <th>F1-score</th>
+      <th>Soporte</th>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>0.92</td>
+      <td>0.97</td>
+      <td>0.95</td>
+      <td>5469</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0.98</td>
+      <td>0.93</td>
+      <td>0.95</td>
+      <td>6743</td>
+    </tr>
+  </table>
+  <br>
+  <em>Tabla 4. Resultados de evaluación del modelo reducido a 7 variables predictoras.</em>
+</p>
+
+<p align="center">
+  <img src="./images/reducedConfussionMatrix.png" alt="reduced confussion matrix" width="40%" />
+  <br>
+  <em>Gráfica 5. Matriz de confusión del modelo reducido a 7 variables predictoras</em>
+</p>
+
+## Conclusiones
+
+Es factible construir un modelo clasificador de hongos utilizando al menos siete variables predictoras,
+mediante una red neuronal entrenada con el algoritmo de retropropagación y una arquitectura del tipo MLP
+(Perceptrón Multicapa). Este modelo logra una precisión del 95%, lo cual representa un desempeño sólido.
+No obstante, si bien la reducción de variables puede conllevar beneficios en términos de eficiencia computacional,
+la clasificación precisa de hongos como venenosos o no venenosos tiene implicaciones directas en la seguridad alimentaria,
+así como en la investigación de posibles aplicaciones terapéuticas. Por esta razón, se recomienda la utilización del
+conjunto completo de 20 variables, con el cual el modelo alcanza una precisión del 100%, cometiendo solo cinco errores
+en el conjunto de datos de prueba. Además, el modelo está preparado para realizar predicciones sobre arreglos de entrada
+compuestos por 125 valores, correspondientes a las 20 variables transformadas mediante codificación one-hot.
+
+En síntesis, este enfoque no solo ofrece un alto rendimiento, sino que también sienta las bases para soluciones confiables
+y escalables en el ámbito de la micología aplicada y la inteligencia artificial.
 
 ## Referencias
 
